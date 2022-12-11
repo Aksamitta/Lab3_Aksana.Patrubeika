@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Lab3_Aksana.Patrubeika
 {
@@ -29,45 +30,81 @@ namespace Lab3_Aksana.Patrubeika
             которые на вход(входным параметром) будут принимать вводимую на вход программы строку.
                         */
             Console.WriteLine("Enter numbers of a document: ");
-            //string[] documentNumber = Console.ReadLine().Split(' ').ToArray();
-            string[] documentNumber = { "8888", "ABC", "8888", "hHh", "8t8t" };
-            string a = ($"{documentNumber[0]}{documentNumber[1]}{documentNumber[2]}{documentNumber[3]}{documentNumber[4]}");
+            //string[] documentNumber = { "8888", "ABC", "8888", "hHh", "8t8t" };
+            //string a = ($"{documentNumber[0]}{documentNumber[1]}{documentNumber[2]}{documentNumber[3]}{documentNumber[4]}");
+            string numbers = Console.ReadLine();
+            string [] words = numbers.Split(new char[] {' '}); 
+            Console.Clear();
+            string newNumbers = String.Join("-", words);
+            Console.WriteLine(newNumbers);
 
-            numbersOnly(documentNumber);
-            
+            IndexOf(newNumbers);
+            Replace(newNumbers);
+            deleteNumber(newNumbers);
+            toLower(newNumbers);
+            toUpper(newNumbers);
+            check(newNumbers);
+            checkStart(newNumbers);
+            checkEnd(newNumbers);
 
-            
-            var sb1 = new StringBuilder(a);
-            sb1.Remove(0, 4);
-            sb1.Remove(3, 4);
-            sb1.Remove(6, 1);
-            sb1.Remove(7, 1);
-            string line2 = sb1.ToString();
-            Console.WriteLine(line2);
+            Console.ReadLine();
+        }
 
-            
-            var sb2 = new StringBuilder(line2);
-            sb2.Insert(3, "/");
-            sb2.Insert(7, "/");
-            sb2.Insert(9, "/");
-            string line3 = sb2.ToString();
+       
+        public static void IndexOf(string number)
+        {
+            var firstIndex = number.IndexOf('-');
+            var secondIndex = number.IndexOf('-', firstIndex - 1);
+            string part = number.Substring(0, secondIndex);
+            var firstIndex1 = number.IndexOf('-', secondIndex - 1);
+            string part2 = number.Substring(9, firstIndex1);
+            Console.WriteLine($"{part}-{part2}");
+        }
 
-            Console.WriteLine(line3.ToLower());
-            Console.WriteLine($"Letters: {line3.ToUpper()}");
+        public static void Replace(string number)
+        {
+            var newNunberSecond = number.Substring(18);
+            //string newNumberFirst = number.Substring(0, 18);
+            string newNumberFirst = new string(number.Substring(0, 18).Select(c => char.IsLetter(c) ? '*' : c).ToArray());
+            string result = newNumberFirst.Insert(18, newNunberSecond);
+            Console.WriteLine(result);
+        }
+        public static void deleteNumber(string number)
+        {
+            var delete = new Regex(@"\d");
+            var delete2 = new Regex(@"\W");
+            var newNumber = delete.Replace(number, String.Empty);
+            var newNumber2 = delete2.Replace(newNumber, String.Empty).Insert(3, "/").Insert(7, "/").Insert(9, "/");
+            Console.WriteLine(newNumber2); 
+        }
+        public static void toLower(string number)
+        {
+            //Console.WriteLine(number.ToLower());
+            Console.WriteLine($"Letters: {number.ToLower()}");
+        }
 
-            string check1 = "abc";
-            string check2 = "ABC";
-            if (a.Contains(check1) || a.Contains(check2))
+        public static void toUpper(string number)
+        {
+            //Console.WriteLine(number.ToLower());
+            Console.WriteLine($"Letters: {number.ToUpper()}");
+        }
+
+        public static void check(string number)
+        {
+            string pattern = @"\w*abc\w*";
+            if (Regex.IsMatch(number, pattern, RegexOptions.IgnoreCase))
             {
-                Console.WriteLine($"String {a} contains {check1}/{check2}");
+                Console.WriteLine($"String contains abc");
             }
-            else 
+            else
             {
-                Console.WriteLine($"String {a} doesn't contain {check1}/{check2}");
+                Console.WriteLine($"String doesn't contain abc");
             }
-
+        }
+        public static void checkStart(string number)
+        {
             string check3 = "555";
-            if (a.StartsWith(check3))
+            if (number.StartsWith(check3))
             {
                 Console.WriteLine($"String starts with {check3}");
             }
@@ -75,56 +112,18 @@ namespace Lab3_Aksana.Patrubeika
             {
                 Console.WriteLine($"String doesn't start with {check3}");
             }
-
+        }
+        public static void checkEnd(string number)
+        {
             string check4 = "1a2b";
-            if (a.EndsWith(check4))
+            if (number.EndsWith(check4))
             {
-                Console.WriteLine($"String starts with {check4}");
+                Console.WriteLine($"String ends with {check4}");
             }
             else
             {
-                Console.WriteLine($"String doesn't start with {check4}");
+                Console.WriteLine($"String doesn't end with {check4}");
             }
-
-
-
-
-
-
-            Console.ReadLine();
-        }
-        //public static void line(string line)
-        //{
-        //    for (int i = 0; i < line.Length; i++)
-        //    {
-        //        if (i >= '0' && i <= '9')
-        //        {
-        //            line = line.Replace('c', '*');
-        //        }
-        //    }
-
-        //    Console.WriteLine(line);
-        //}
-
-        public static void numbersOnly(string[] array)
-        {
-            Console.WriteLine($"{array[0]} {array[2]}");
-            string a = ($"{array[0]}{array[1]}{array[2]}{array[3]}{array[4]}");
-            var sb = new StringBuilder(a);
-            int pos4 = 4;
-            int pos5 = 5;
-            int pos6 = 6;
-            int pos11 = 11;
-            int pos12 = 12;
-            int pos13 = 13;
-            char rep = '*';
-            sb[pos4] = rep;
-            sb[pos5] = rep;
-            sb[pos6] = rep;
-            sb[pos11] = rep;
-            sb[pos12] = rep;
-            sb[pos13] = rep;
-            Console.WriteLine(sb);
         }
     }
 }
